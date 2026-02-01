@@ -9,18 +9,15 @@ export default function SearchPage() {
   const query = searchParams.get("query") || "";
 
   const [searchInput, setSearchInput] = useState(query);
-
   const [posts, setPosts] = useState([]);
   const [businessNames, setBusinessNames] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setSearchInput(query);
 
-    if (query.trim()) {
-      performSearch(query);
-    } else {
+    if (query.trim()) performSearch(query);
+    else {
       setPosts([]);
       setBusinessNames([]);
     }
@@ -29,25 +26,28 @@ export default function SearchPage() {
   const performSearch = async (q) => {
     setLoading(true);
     try {
-      const data = await apiService.searchPosts(q); // GET /api/posts/search?query=... [file:315]
+      // apiService.searchPosts() hits GET /api/posts/search?query=... [file:315]
+      const data = await apiService.searchPosts(q);
 
-      // If backend returns PostDto[]
-      if (Array.isArray(data)) {
-        setPosts(data);
-        setBusinessNames(
-            [...new Set(data.map(p => (p?.name || "").trim()).filter(Boolean))]
-        );
-        return;
-      }
+      // Support both possible backend shapes:
+      // 1) PostDto[]  (old)
+      // 2) { businessNames: string[], posts: PostDto[] } (new)
+      const nextPosts = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.posts)
+              ? data.posts
+              : [];
 
-      // If backend returns { businessNames, posts }
-      setPosts(Array.isArray(data?.posts) ? data.posts : []);
-      setBusinessNames(Array.isArray(data?.names) ? data.names : []);
+      const nextNames = Array.isArray(data?.businessNames)
+          ? data.businessNames
+          : [...new Set(nextPosts.map((p) => (p?.name || "").trim()).filter(Boolean))];
+
+      setPosts(nextPosts);
+      setBusinessNames(nextNames);
     } finally {
       setLoading(false);
     }
   };
-
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -56,22 +56,26 @@ export default function SearchPage() {
 
   return (
       <div className="space-y-6">
-        {/* keep your existing search form UI here, and keep handleSearch + searchInput binding */}
+        {/* keep your existing search form UI here, use handleSearch + searchInput */}
 
         {loading ? (
             <LoadingSpinner size="lg" text="Searching..." />
         ) : query ? (
             <div className="space-y-6">
-              {/* Unique business names (backend calculated) */}
+              {/* Unique business entities (buttons) */}
               {businessNames.length > 0 && (
                   <div className="card p-4">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Business entities found
+                    </div>
+
                     <div className="flex flex-wrap gap-2">
                       {businessNames.map((name) => (
                           <Link
                               key={name}
                               to={`/fraud-profile/${encodeURIComponent(name)}`} // route exists [file:317]
                               className="btn btn-secondary"
-                              title="Open fraud profile"
+                              title="Open Fraud Profile"
                           >
                             {name}
                           </Link>
@@ -80,7 +84,7 @@ export default function SearchPage() {
                   </div>
               )}
 
-              {/* Posts */}
+              {/* Posts list */}
               <div className="flex flex-col gap-3">
                 {posts.map((post) => (
                     <PostCard key={post.id} post={post} />

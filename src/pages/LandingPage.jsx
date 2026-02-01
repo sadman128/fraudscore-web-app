@@ -31,7 +31,7 @@ export default function LandingPage() {
 
     return (
 
-            <main className="container mx-auto px-4 max-w-6xl pt-20 pb-0 mb-0">
+            <main className="container mx-auto px-4 max-w-8xl pt-20 pb-0 mb-0">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left: Hero Section */}
                     <div className="space-y-8">
@@ -142,7 +142,7 @@ export default function LandingPage() {
 
                 {/* Credits */}
                 <p className="text-center mt-12 text-s text-white-600 dark:text-gray-500 italic">
-                    Mock data support by <span className="font-medium">Boltu, Bambola and Mofiz</span>
+                    Mock data support by <span className="font-medium">bignoob11, amimofiz, elrubio44, lightsalt, superman1</span>
                 </p>
             </main>
 

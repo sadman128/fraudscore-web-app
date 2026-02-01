@@ -9,7 +9,7 @@
 
 import mockData from "../data/mock-data.json"
 
-const API_BASE_URL = "http://26.107.178.117:5000/api";
+const API_BASE_URL = "http://localhost:5000/api";
 
 /**
  * Fetch with error handling and mock fallback
@@ -267,6 +267,8 @@ export const apiService = {
     }))
   },
 
+
+
   /**
    * GET /posts/:id - Get single post by ID
    */
@@ -374,6 +376,20 @@ export const apiService = {
       ) || []
     }
   },
+
+
+
+  async getScore(prompt) {
+    return fetchWithFallback(
+        "/score",
+        { method: "POST", body: JSON.stringify({ prompt }) },
+        null
+    );
+  },
+
+
+
+
 
   /**
    * GET /posts/category/:category - Get posts by category
@@ -678,6 +694,33 @@ export const apiService = {
       method: "POST",
     })
   },
+
+  // apiService.js
+  async initCoffeePayment({ username, amount }) {
+    return fetchWithFallback(
+        "/coffee/init",
+        {
+          method: "POST",
+          body: JSON.stringify({ username, amount }),
+        },
+        null
+    );
+  },
+  async getPayments() {
+    try {
+      const response = await fetch(`${this.API_BASE_URL}/coffee/payments`, {
+        method: 'GET',
+        headers: {
+
+        }
+      })
+      return response.ok ? await response.json() : []
+    } catch {
+      return []
+    }
+  },
+
+
 
 
   // ============ LOGOUT ============

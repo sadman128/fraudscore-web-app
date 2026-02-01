@@ -41,6 +41,7 @@ export default function CommentSection({ comments = [], postId, onDeleted }) {
 
             setDeleteTargetId(null)
             toast.success("Comment deleted")
+
         } catch (error) {
             console.error("Delete failed:", error)
             toast.error("Delete failed:", error)

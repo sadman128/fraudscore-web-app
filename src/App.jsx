@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom"
+import {Routes, Route, useNavigate, useSearchParams} from "react-router-dom"
 import { useEffect, useState, useRef } from "react"
 import Navbar from "./components/Navbar"
 import HomePage from "./pages/HomePage"
@@ -15,6 +15,7 @@ import { useAuth } from "./context/AuthContext"
 import { getCookie, setCookie, deleteCookie } from "./utils/cookieUtils"
 import LandingPage from "./pages/LandingPage";
 import { Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 
 function AuthGuard({ children }) {
@@ -173,6 +174,39 @@ function RootRedirect() {
 
 
 function App() {
+
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const coffeeStatus = searchParams.get('coffee');
+
+        if (coffeeStatus) {
+            switch (coffeeStatus) {
+                case 'success':
+                    toast.success('🎉 Thank you for the coffee! ', {
+                        duration: 2000,
+                        position: 'top-right',
+                    });
+                    break;
+                case 'fail':
+                    toast.error('❌ Payment failed. Please try again.', {
+                        duration: 1000,
+                        position: 'top-right',
+                    });
+                    break;
+                case 'cancel':
+                    toast('ℹ️ Payment cancelled.', {
+                        duration: 1000,
+                        position: 'top-right',
+                    });
+                    break;
+            }
+            navigate(window.location.pathname, { replace: true });
+        }
+    }, [searchParams, navigate]);
+
+
     return (
 
         <div className="min-h-screen">
@@ -206,7 +240,7 @@ function App() {
 
 
             <Navbar />
-            <main className="container mx-auto px-4 py-6 max-w-6xl">
+            <main className="container mx-auto px-4 py-6 max-w-8xl">
                 <Routes>
                     <Route path="/" element={<RootRedirect />} />
                     <Route path="/landing" element={<LandingPage />} />

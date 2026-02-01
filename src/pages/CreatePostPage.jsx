@@ -231,14 +231,16 @@ export default function CreatePostPage() {
   }
 
   return (
-      <div className="max-w-3xl mx-auto py-6">
-        {/* Back button */}
+      <div className="max-w-6xl mx-auto py-6">
+        {/* Back button
+
         <div className="mb-6">
           <Link to="/home" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </Link>
         </div>
+        */}
 
         <div className="card p-6 md:p-8">
           {/* Header */}
