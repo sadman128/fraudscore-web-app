@@ -9,15 +9,8 @@
 
 import mockData from "../data/mock-data.json"
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "http://192.168.0.156:5000/api";
 
-/**
- * Fetch with error handling and mock fallback
- * @param {string} endpoint - API endpoint path
- * @param {object} options - Fetch options
- * @param {string} mockDataKey - Key to access mock data
- * @returns {Promise} - Response data or mock data
- */
 async function fetchWithFallback(endpoint, options = {}, mockDataKey = null) {
   try {
     const url = `${API_BASE_URL}${endpoint}`

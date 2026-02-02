@@ -48,17 +48,20 @@ export default function Navbar() {
   const isLandingPage = location.pathname === "/landing"
 
   // ✅ NEW: Verify auth on Navbar mount
+  // ✅ FIXED - Run only when tokens change
   useEffect(() => {
     const verifyNavbarAuth = async () => {
-      try {
-        const accessToken = getCookie("accessToken")
-        const refreshToken = getCookie("refreshToken")
+      // Skip if no tokens
+      const accessToken = getCookie("accessToken")
+      if (!accessToken) {
+        setNavbarUser(null)
+        setUserLoading(false)
+        return
+      }
 
-        if (!accessToken || !refreshToken) {
-          setNavbarUser(null)
-          setUserLoading(false)
-          return
-        }
+      try {
+        setUserLoading(true)
+        const refreshToken = getCookie("refreshToken")
 
         const response = await fetch(`${apiService.API_BASE_URL}/verifyLogin`, {
           method: "POST",
@@ -87,7 +90,17 @@ export default function Navbar() {
     }
 
     verifyNavbarAuth()
-  }, [])
+  }, []) // ✅ EMPTY DEPENDENCY - runs once
+
+// ✅ NEW: Listen to token changes (not isAuthenticated)
+  useEffect(() => {
+    const accessToken = getCookie("accessToken")
+    if (accessToken && !userLoading && !navbarUser) {
+      // Token exists but navbar not loaded → trigger verification
+      const timer = setTimeout(() => window.location.reload(), 100)
+      return () => clearTimeout(timer)
+    }
+  }, [getCookie("accessToken")]) // ✅ Listen to token cookie changes
 
   const comingSoon = () => toast("Feature coming soon")
 
