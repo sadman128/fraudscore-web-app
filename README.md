@@ -22,8 +22,8 @@ Production-ready **Spring Boot 4.x** (Java 25) backend + **React 18** (Vite + Ta
 ---
 
 ## 📂 Repositories
-• [Backend](https://github.com/sadman128/fraudscore-back) 
-• [AI](https://github.com/sadman128/fraudscore-ai)
+• [backend part](https://github.com/sadman128/fraudscore-back) 
+• [ai part](https://github.com/sadman128/fraudscore-ai)
 
 ---
 
