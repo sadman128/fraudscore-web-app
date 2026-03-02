@@ -80,11 +80,12 @@ Production-ready **Spring Boot 4.x** (Java 25) backend + **React 18** (Vite + Ta
 
 ## 📷 Screenshots
 
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/37ae0abe-b107-45ac-af63-ffc98fa159ca"
        width="48%" height="420px" style="object-fit: cover;" />
   <span style="display:inline-block;width:2px;height:320px;background-color:#ccc;margin:0 5px;"></span>
-  <img src="https://github.com/user-attachments/assets/7c8112a8-d08c-4d43-8c45-f148b1544780"
+  <img src="https://github.com/user-attachments/assets/6c57159d-a32a-46c5-98d9-74e89b32ec91"
        width="48%" height="420px" style="object-fit: cover;" />
 </p>
 
